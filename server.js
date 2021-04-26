@@ -1,9 +1,10 @@
 import express from 'express';
 import handlebars from  'express-handlebars';
 import path from 'path';
-import mongoose from 'mongoose'
-import productModel from './model/products.js'
-
+import mongoose from 'mongoose';
+import fs from 'fs';
+import productModel from './model/products.js';
+import email from './email.js';
 
 const app = express();
 
@@ -40,15 +41,38 @@ app.get('/listar/:id?', (req,res) => {
     })
 });
 
+app.get('/set-correo', (req, res) => {
+    res.sendFile(path.join(process.cwd() + '/public/set-correo.html'));
+})
+
 app.post('/ingreso', (req, res) => {
     let product = req.body
     const productoNuevo = new productModel(product);
     productoNuevo.save( err => {
         if (err) throw new Error (`Error: ${err}`)
-        console.log('usuario incorporado');
+        console.log('producto incorporado');
+
+        productModel.find({}, (err,productos) => {
+            if(err) throw new Error(`error en lectura de productos: ${err}`)
+            
+            if(productos.length % 10 == 0) {
+                email.sendmail(productos, (err,info) => {
+                    console.log(err,info)
+                    res.redirect('/')                    
+                })  
+            }
+        })
         res.redirect('/');
     })
+})
 
+app.post('/set-correo', (req,res) =>{
+    let {correo} = req.body
+
+    fs.writeFile('correo.dat', correo, err => {
+        if(err) throw new Error(`No se pudo escribir correctamente el correo: ${err}`)
+        res.redirect('/')
+    })
 })
 
 app.delete('/borrar/:id', async (req, res) => {
@@ -69,7 +93,6 @@ mongoose.connect('mongodb+srv://moruezabal:Zane_0042@misdatos.avg7f.mongodb.net/
         app.listen(PORT, () => {
             console.log(`Aplicación corriendo en http://localhost:${PORT}`)
         })
-
 })
 
 
