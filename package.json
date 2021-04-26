@@ -1,5 +1,28 @@
 {
+  "name": "tp4",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moruezabal/FizzmodAcademy4.git"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moruezabal/FizzmodAcademy4/issues"
+  },
+  "homepage": "https://github.com/moruezabal/FizzmodAcademy4#readme",
+  "description": "",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }
