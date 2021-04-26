@@ -11,6 +11,17 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'));
 
+app.engine('hbs', handlebars({
+    extname:'.hbs', 
+    defaultLayout: 'main.hbs',
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    },
+}))
+app.set('views', './views')
+app.set('view engine', 'hbs')
+
 app.get('/', (req,res) => {
     res.sendFile(path.join(process.cwd() + '/public/form.html')); 
 });
@@ -25,7 +36,7 @@ app.get('/listar/:id?', (req,res) => {
         products.forEach(product => {
             console.log(product);
         });
-        res.send(products)
+        res.render('list', {products})
     })
 });
 
@@ -35,9 +46,15 @@ app.post('/ingreso', (req, res) => {
     productoNuevo.save( err => {
         if (err) throw new Error (`Error: ${err}`)
         console.log('usuario incorporado');
-        res.send(product);
+        res.redirect('/');
     })
 
+})
+
+app.delete('/borrar/:id', async (req, res) => {
+    let {id} = req.params;
+    let response = await productModel.deleteOne({_id:id},);
+    res.send(response);
 })
 
 const PORT = (process.env.PORT || 8080);
