@@ -12,9 +12,9 @@ _npm start_
 
 _Endpoints disponibles para navegar la aplicación_
 
-('/') -> Formulario para cargar proyectos
-('/listar/:id') -> Lista los productos. Si tiene el id, lista solo el producto seleccionado
-('/listar/set-correo) -> Formulario para ingresar correo electrónico al cual enviar el email.
+* ('/') -> Formulario para cargar proyectos
+* ('/listar/:id') -> Lista los productos. Si tiene el id, lista solo el producto seleccionado
+* ('/listar/set-correo) -> Formulario para ingresar correo electrónico al cual enviar el email.
 
 ### Envío de mail 📋
 
